@@ -2,7 +2,7 @@
 Project Description: RAG (Retrieval-Augmented Generation) Pipeline for Document Querying
 
 Key Features:
-** Multi-Source Data Ingestion: Supports text files, web pages, and PDFs.
+**Multi-Source Data Ingestion: Supports text files, web pages, and PDFs.
 
 ** Efficient Text Processing: Splits large documents into smaller chunks for better handling.
 
