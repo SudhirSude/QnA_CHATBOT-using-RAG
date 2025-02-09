@@ -1,0 +1,19 @@
+langchain_openai
+langchain_core
+python-dotenv
+streamlit
+langchain_community
+langserve
+fastapi
+uvicorn
+sse_starlette
+bs4
+pypdf
+faiss-cpu
+ipykernel
+chromadb
+sentence-transformers
+pip install -U langchain-huggingface
+pip install -U langchain-ollama
+install ollama
+ollama pull llama2
