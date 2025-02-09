@@ -1,106 +1,135 @@
-# QnA_CHATBOT-using-RAG
-Project Description: RAG (Retrieval-Augmented Generation) Pipeline for Document Querying
+**Project Description: RAG (Retrieval-Augmented Generation) Pipeline for
+Document Querying**
 
-Key Features:
-**Multi-Source Data Ingestion: Supports text files, web pages, and PDFs.
+**Key Features**
 
-** Efficient Text Processing: Splits large documents into smaller chunks for better handling.
+-   **Multi-Source Data Ingestion:** Supports text files, web pages, and
+    PDFs.
 
-** Semantic Search: Uses vector embeddings and a vector store for accurate document retrieval.
+-   **Efficient Text Processing:** Splits large documents into smaller
+    chunks for better handling.
 
-** LLM Integration: Combines retrieval with a large language model for context-aware responses.
+-   **Semantic Search:** Uses vector embeddings and a vector store for
+    accurate document retrieval.
 
-** Modular Design: Built using LangChain's modular components, making it easy to extend or modify.
+-   **LLM Integration:** Combines retrieval with a large language model
+    for context-aware responses.
 
+-   **Modular Design:** Built using LangChain\'s modular components,
+    making it easy to extend or modify.
 
+**Technologies Used**
 
-Technologies Used
-** LangChain: Framework for building LLM-powered applications.
+-   **LangChain:** Framework for building LLM-powered applications.
 
-** Hugging Face Embeddings: For generating text embeddings.
+-   **Hugging Face Embeddings:** For generating text embeddings.
 
-** Chroma Vector Store: For storing and querying vector embeddings.
+-   **Chroma Vector Store:** For storing and querying vector embeddings.
 
-** Ollama LLM: For generating responses using the llama3.2 model.
+-   **Ollama LLM:** For generating responses using the llama3.2 model.
 
-** WebBaseLoader: For parsing and extracting HTML content.
+-   **WebBaseLoader:** For parsing and extracting HTML content.
 
+This Jupyter notebook outlines the implementation of a
+**Retrieval-Augmented Generation (RAG) pipeline**, which combines
+document retrieval with a large language model (LLM) to answer user
+queries based on provided context. The pipeline is built using the
+**LangChain** framework, along with other libraries like **Hugging Face
+Embeddings, Chroma Vector Store, and Ollama LLM**.
 
+1.  **Data Ingestion**
 
-This Jupyter notebook outlines the implementation of a Retrieval-Augmented Generation (RAG) pipeline, which combines document retrieval with a large language model (LLM) to answer user queries based on provided context. The pipeline is built using the LangChain framework, along with other libraries like Hugging Face Embeddings, Chroma Vector Store, and Ollama LLM. Below is a detailed breakdown of the project:
-
-1. Data Ingestion
 The project begins by loading data from multiple sources:
 
-** Text Files: A text file (speech.txt) is loaded using TextLoader from LangChain.
+-   **Text Files:** A text file (speech.txt) is loaded using TextLoader
+    from LangChain.
 
-** Web Pages: HTML content from a specific webpage is loaded using WebBaseLoader. The loader is configured to extract only specific HTML elements (e.g., post titles, content, and headers) using BeautifulSoup.
+-   **Web Pages:** HTML content from a specific webpage is loaded using
+    WebBaseLoader. The loader is configured to extract only specific
+    HTML elements (e.g., post titles, content, and headers) using
+    BeautifulSoup.
 
-** PDF Documents: A PDF file (attention.pdf) is loaded using PyPDFLoader.
+-   **PDF Documents:** A PDF file (attention.pdf) is loaded using
+    PyPDFLoader.
 
 These documents are then processed and prepared for further analysis.
 
+2.  **Text Splitting**
 
+To handle large documents, the project uses a
+RecursiveCharacterTextSplitter to divide the text into smaller,
+manageable chunks. The splitter is configured with:
 
-2. Text Splitting
-To handle large documents, the project uses a RecursiveCharacterTextSplitter to divide the text into smaller, manageable chunks. The splitter is configured with:
+-   **Chunk Size:** 1000 characters per chunk.
 
-** Chunk Size: 1000 characters per chunk.
+-   **Chunk Overlap:** 200 characters to ensure context is preserved
+    across chunks.
 
-** Chunk Overlap: 200 characters to ensure context is preserved across chunks.
+This step is crucial for efficient processing and retrieval of relevant
+information.
 
-This step is crucial for efficient processing and retrieval of relevant information.
+3.  **Vector Embedding and Vector Store**
 
+The project leverages **Hugging Face Embeddings** to convert text chunks
+into high-dimensional vector representations. Specifically, the
+all-MiniLM-L6-v2 model is used for generating embeddings. These
+embeddings are then stored in a **Chroma Vector Store**, which allows
+for efficient similarity searches.
 
+4.  **Similarity Search**
 
-3. Vector Embedding and Vector Store
-The project leverages Hugging Face Embeddings to convert text chunks into high-dimensional vector representations. Specifically, the all-MiniLM-L6-v2 model is used for generating embeddings. These embeddings are then stored in a Chroma Vector Store, which allows for efficient similarity searches.
+The vector store enables **semantic search functionality**. Users can
+query the vector store with natural language questions, and the system
+retrieves the most relevant document chunks based on vector similarity.
+For example:
 
+**Query:** \"Who are the authors of *Attention Is All You Need*?\"\
+**Query:** \"What is an encoder and decoder stack?\"
 
+The system retrieves and displays the most relevant content from the
+stored documents.
 
-5. Similarity Search
-The vector store enables semantic search functionality. Users can query the vector store with natural language questions, and the system retrieves the most relevant document chunks based on vector similarity. For example:
+5.  **Retriever and Chain with LangChain**
 
-** Query: "Who are the authors of attention is all you need?"
+The project integrates a **retriever and a document chain** to create a
+seamless query-response pipeline:
 
-** Query: "What is encoder and decoder stack?"
+-   **Retriever:** Fetches relevant documents from the vector store
+    based on the user\'s query.
 
-The system retrieves and displays the most relevant content from the stored documents.
+-   **Document Chain:** A ChatPromptTemplate structures the input for
+    the LLM. The template instructs the model to answer questions based
+    **only on the provided context** and to **think step-by-step**
+    before generating a detailed response.
 
+-   **LLM Integration:** Uses **Ollama LLM** with the llama3.2 model to
+    generate responses.
 
+The retrieval chain enables the system to:
 
-5. Retriever and Chain with LangChain
-The project integrates a retriever and a document chain to create a seamless query-response pipeline:
+1.  Retrieve relevant documents for a given query.
 
-** Retriever: The retriever fetches relevant documents from the vector store based on the user's query.
+2.  Pass the documents and query to the LLM.
 
-** Document Chain: A ChatPromptTemplate is used to structure the input for the LLM. The template instructs the model to answer questions based only on the provided context and to think step-by-step before generating a detailed response.
+3.  Generate a detailed, context-aware response.
 
-** LLM Integration: The project uses Ollama LLM with the llama3.2 model to generate responses.
+**Example Query and Response**
 
+The notebook demonstrates the pipeline\'s functionality with an example
+query:
 
-The retrieval chain combines the retriever and document chain, enabling the system to:
+**Query:** \"Scaled Dot-Product Attention\"\
+**Response:** The system provides a step-by-step explanation of the
+concept, including its mathematical formulation and practical
+implementation.
 
-** Retrieve relevant documents for a given query.
+**Potential Applications**
 
-** Pass the documents and query to the LLM.
+-   **Question-Answering Systems:** Automatically answer user queries
+    based on a knowledge base.
 
-** Generate a detailed, context-aware response.
+-   **Document Summarization:** Extract key information from large
+    documents.
 
-
-
-6. Example Query and Response
-The notebook demonstrates the pipeline's functionality with an example query:
-
-** Query: "Scaled Dot-Product Attention"
-
-** Response: The system provides a step-by-step explanation of the concept, including its mathematical formulation and practical implementation.
-
-
-
-Potential Applications
-Question-Answering Systems: Automatically answer user queries based on a knowledge base.
-
-Document Summarization: Extract key information from large documents.
-
-Research Assistance: Help researchers find relevant information from a collection of papers or articles.
+-   **Research Assistance:** Help researchers find relevant information
+    from a collection of papers or articles.
